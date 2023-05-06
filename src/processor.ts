@@ -1,9 +1,27 @@
-import { runProcessor as run1 } from "./processor-mongo";
-import { runProcessor as run2 } from "./processor-mongo1";
+import ProcessorsConfig from "./processors.config";
 
-function main() {
-  run1();
-  run2();
+async function main() {
+  const promises = ProcessorsConfig.map(
+    async ({
+      filePath,
+      identifier,
+      startBlock,
+      contractAddresses,
+      mongoDbUrl,
+      mongoDbName,
+    }) => {
+      const processor = await import(filePath);
+      new processor.default(
+        mongoDbUrl,
+        mongoDbName,
+        identifier,
+        contractAddresses,
+        startBlock
+      ).run();
+    }
+  );
+
+  await Promise.all(promises);
 }
 
 main();

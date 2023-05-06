@@ -12,14 +12,27 @@ import { MongoDatabase, MongoStore } from "@allenzhong/squid-mongo";
 import dotenv from "dotenv";
 dotenv.config();
 
-const CONTRACT_ADDRESS = "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d";
+type Item = BatchProcessorItem<typeof processor>;
+type Context = BatchHandlerContext<MongoStore, Item>;
+interface RawTransfer {
+  id: string;
+  contractAddress: string;
+  tokenId: number;
+  from: string;
+  to: string;
+  timestamp: Date;
+  blockNumber: number;
+  txHash: string;
+}
 
-const processor_byac = new EvmBatchProcessor()
+const CONTRACT_ADDRESS = "0x1AFEF6b252cc35Ec061eFe6a9676C90915a73F18";
+
+const processor = new EvmBatchProcessor()
   .setDataSource({
     archive: lookupArchive("eth-mainnet"),
   })
   .setBlockRange({
-    from: 12_287_507,
+    from: 13450863,
   })
   .addLog(CONTRACT_ADDRESS, {
     filter: [[bayc.events.Transfer.topic]],
@@ -33,19 +46,6 @@ const processor_byac = new EvmBatchProcessor()
       },
     },
   });
-
-type Item = BatchProcessorItem<typeof processor_byac>;
-type Context = BatchHandlerContext<MongoStore, Item>;
-interface RawTransfer {
-  id: string;
-  contractAddress: string;
-  tokenId: number;
-  from: string;
-  to: string;
-  timestamp: Date;
-  blockNumber: number;
-  txHash: string;
-}
 
 function getRawTransfers(ctx: Context): RawTransfer[] {
   let transfers: RawTransfer[] = [];
@@ -107,7 +107,7 @@ async function saveTransfers(ctx: Context, rawTransfers: RawTransfer[]) {
 }
 
 export const runProcessor = () => {
-  processor_byac.run(
+  processor.run(
     new MongoDatabase({
       url: process.env.MONGODB_URL!,
       dbName: process.env.MONGODB_DB_NAME!,

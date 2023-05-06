@@ -59,6 +59,11 @@
       "deps": ["build"],
       "cmd": ["node", "--require=dotenv/config", "lib/processor-mongo.js"]
     },
+    "process": {
+      "description": "Load .env and start the squid processor",
+      "deps": ["build"],
+      "cmd": ["node", "--require=dotenv/config", "lib/processor.js"]
+    },
     "process:prod": {
       "description": "Start the squid processor",
       "deps": ["migration:apply"],

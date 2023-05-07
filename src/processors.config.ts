@@ -1,9 +1,7 @@
-import { IProcessorConfig } from "./processors/IProcessorConfig";
 import * as erc721 from "./abi/erc721";
-import { ITransfer } from "./events/Transfer/model";
 import { dataHandler, eventHandler } from "./events/Transfer/handler";
 
-export const ProcessorsConfig = [
+export const processors = [
   {
     network: "eth-mainnet",
     filePath: "./processors/processor-erc721",
@@ -21,4 +19,4 @@ export const ProcessorsConfig = [
   },
 ];
 
-export default ProcessorsConfig;
+export default processors;

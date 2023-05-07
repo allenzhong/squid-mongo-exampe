@@ -50,6 +50,7 @@ export class BaseProcessor implements IProcessor {
     startBlock,
     filter,
   }: IProcessorParams) {
+    console.log(`[Processor] ${network} ${contractAddresses} is running`)
     this.network = network;
     this.identifier = identifier;
     this.contractAddresses = contractAddresses;
@@ -85,12 +86,13 @@ export class BaseProcessor implements IProcessor {
       });
   }
 
-  public run<T>(eventHandler: EventHandler<T>, dataHandler: DataHandler<T>) {
+  public async run<T>(eventHandler: EventHandler<T>, dataHandler: DataHandler<T>) {
     this.processor.run(this.mongoDb, async (ctx) => {
       const data: T[] = [];
       for (let block of ctx.blocks) {
         for (let item of block.items) {
-          if (item.kind !== "evmLog") continue;
+          if (item.kind !== "evmLog")
+            continue;
           const d = eventHandler(block, item);
           data.push(d);
         }

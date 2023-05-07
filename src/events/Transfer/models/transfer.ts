@@ -1,15 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-
-export interface ITransfer {
-  id: string;
-  contractAddress: string;
-  tokenId: string;
-  from: string;
-  to: string;
-  timestamp: Date;
-  blockNumber: number;
-  txHash: string;
-}
+import { ITransfer } from "../interfaces";
 
 export const TransferSchema = new Schema(
   {
@@ -23,7 +13,7 @@ export const TransferSchema = new Schema(
     txHash: { type: String, required: true },
   },
   {
-    collection: "transfer",
+    collection: "transfers",
     timestamps: true,
   }
 );
@@ -34,6 +24,6 @@ TransferSchema.index(
 );
 
 export const TransferModel = mongoose.model<ITransfer>(
-  "transfer",
+  "transfers",
   TransferSchema
 );

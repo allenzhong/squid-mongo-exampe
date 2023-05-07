@@ -1,5 +1,5 @@
 manifestVersion: subsquid.io/v0.1
-name: bayc-squid
+name: squid-mongo-example 
 version: 1
 description: 'The very first evm squid from manifest  '
 build: 

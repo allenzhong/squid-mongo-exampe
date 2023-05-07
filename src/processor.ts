@@ -1,7 +1,7 @@
-import ProcessorsConfig from "./processors.config";
+import processors from "./processors.config";
 
 async function main() {
-  const promises = ProcessorsConfig.map(
+  const promises = processors.map(
     async ({
       filePath,
       network,

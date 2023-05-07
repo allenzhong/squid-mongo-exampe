@@ -4,20 +4,26 @@ async function main() {
   const promises = ProcessorsConfig.map(
     async ({
       filePath,
-      identifier,
-      startBlock,
-      contractAddresses,
+      network,
       mongoDbUrl,
       mongoDbName,
+      identifier,
+      contractAddresses,
+      startBlock,
+      filter,
+      eventHandler,
+      dataHandler,
     }) => {
       const processor = await import(filePath);
-      new processor.default(
+      new processor.default({
+        network,
         mongoDbUrl,
         mongoDbName,
         identifier,
         contractAddresses,
-        startBlock
-      ).run();
+        startBlock,
+        filter,
+      }).run(eventHandler, dataHandler);
     }
   );
 

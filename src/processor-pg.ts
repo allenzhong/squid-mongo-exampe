@@ -8,7 +8,7 @@ import {
 import { lookupArchive } from "@subsquid/archive-registry";
 import assert from "assert";
 import { Owner, Token, Transfer } from "./model";
-import * as bayc from "./abi/bayc";
+import * as bayc from "./abi/erc721";
 
 type Item = BatchProcessorItem<typeof processor>;
 type Context = BatchHandlerContext<Store, Item>;
